@@ -20,21 +20,21 @@ cd .testrepo || exit 1
 
 find . -name "*"
 
-if [[ ! -f "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml" ]]; then
-  echo "ArgoCD config missing - argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
+if [[ ! -f "./argocd/2-services/cluster/default/operators/gitops-cp-mq-ibm-mq-operator.yaml" ]]; then
+  echo "ArgoCD config missing - ./argocd/2-services/cluster/default/operators/gitops-cp-mq-ibm-mq-operator.yaml"
   exit 1
 fi
 
 echo "Printing argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
-cat "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
+cat "./argocd/2-services/cluster/default/operators/gitops-cp-mq-ibm-mq-operator.yaml"
 
-if [[ ! -f "payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml" ]]; then
-  echo "Application values not found - payload/2-services/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
+if [[ ! -f "./payload/2-services/namespace/gitops-cp-mq/ibm-mq-operator/values.yaml" ]]; then
+  echo "Application values not found - ./payload/2-services/namespace/gitops-cp-mq/ibm-mq-operator/values.yaml"
   exit 1
 fi
 
-echo "Printing payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
-cat "payload/${LAYER}namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
+echo "Printing ./payload/2-services/namespace/gitops-cp-mq/ibm-mq-operator/values.yaml"
+cat "./payload/2-services/namespace/gitops-cp-mq/ibm-mq-operator/values.yaml"
 
 count=0
 until kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null || [[ $count -eq 20 ]]; do
