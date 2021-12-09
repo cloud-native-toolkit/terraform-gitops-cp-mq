@@ -20,21 +20,21 @@ cd .testrepo || exit 1
 
 find . -name "*"
 
-if [[ ! -f "./argocd/2-services/cluster/default/operators/gitops-cp-mq-ibm-mq-operator.yaml" ]]; then
-  echo "ArgoCD config missing - ./argocd/2-services/cluster/default/operators/gitops-cp-mq-ibm-mq-operator.yaml"
+if [[ ! -f "./argocd/2-services/cluster/default/operators/${NAMESPACE}-ibm-mq-operator.yaml" ]]; then
+  echo "ArgoCD config missing - ./argocd/2-services/cluster/default/operators/${NAMESPACE}-ibm-mq-operator.yaml"
   exit 1
 fi
 
 echo "Printing argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
-cat "./argocd/2-services/cluster/default/operators/gitops-cp-mq-ibm-mq-operator.yaml"
+cat "./argocd/2-services/cluster/default/operators/${NAMESPACE}-ibm-mq-operator.yaml"
 
-if [[ ! -f "./payload/2-services/namespace/gitops-cp-mq/ibm-mq-operator/values.yaml" ]]; then
-  echo "Application values not found - ./payload/2-services/namespace/gitops-cp-mq/ibm-mq-operator/values.yaml"
+if [[ ! -f "./payload/2-services/namespace/${NAMESPACE}/ibm-mq-operator/values.yaml" ]]; then
+  echo "Application values not found - ./payload/2-services/namespace/${NAMESPACE}/ibm-mq-operator/values.yaml"
   exit 1
 fi
 
-echo "Printing ./payload/2-services/namespace/gitops-cp-mq/ibm-mq-operator/values.yaml"
-cat "./payload/2-services/namespace/gitops-cp-mq/ibm-mq-operator/values.yaml"
+echo "Printing ./payload/2-services/namespace/${NAMESPACE}/ibm-mq-operator/values.yaml"
+cat "./payload/2-services/namespace/${NAMESPACE}/ibm-mq-operator/values.yaml"
 
 count=0
 until kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null || [[ $count -eq 20 ]]; do
@@ -51,21 +51,22 @@ else
   sleep 30
 fi
 
-DEPLOYMENT="${COMPONENT_NAME}-${BRANCH}"
-count=0
-until kubectl get deployment "${DEPLOYMENT}" -n "${NAMESPACE}" || [[ $count -eq 20 ]]; do
-  echo "Waiting for deployment/${DEPLOYMENT} in ${NAMESPACE}"
-  count=$((count + 1))
-  sleep 15
-done
-
-if [[ $count -eq 20 ]]; then
-  echo "Timed out waiting for deployment/${DEPLOYMENT} in ${NAMESPACE}"
-  kubectl get all -n "${NAMESPACE}"
-  exit 1
-fi
-
-kubectl rollout status "deployment/${DEPLOYMENT}" -n "${NAMESPACE}" || exit 1
+#
+#DEPLOYMENT="${COMPONENT_NAME}-${BRANCH}"
+#count=0
+#until kubectl get deployment "${DEPLOYMENT}" -n "${NAMESPACE}" || [[ $count -eq 20 ]]; do
+#  echo "Waiting for deployment/${DEPLOYMENT} in ${NAMESPACE}"
+#  count=$((count + 1))
+#  sleep 15
+#done
+#
+#if [[ $count -eq 20 ]]; then
+#  echo "Timed out waiting for deployment/${DEPLOYMENT} in ${NAMESPACE}"
+#  kubectl get all -n "${NAMESPACE}"
+#  exit 1
+#fi
+#
+#kubectl rollout status "deployment/${DEPLOYMENT}" -n "${NAMESPACE}" || exit 1
 
 cd ..
 rm -rf .testrepo
