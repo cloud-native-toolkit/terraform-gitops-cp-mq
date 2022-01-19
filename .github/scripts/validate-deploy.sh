@@ -10,7 +10,7 @@ SERVER_NAME="default"
 TYPE="base"
 LAYER="2-services"
 
-COMPONENT_NAME="my-module"
+COMPONENT_NAME="ibm-mq"
 
 mkdir -p .testrepo
 
@@ -51,22 +51,35 @@ else
   sleep 30
 fi
 
-#
-#DEPLOYMENT="${COMPONENT_NAME}-${BRANCH}"
-#count=0
-#until kubectl get deployment "${DEPLOYMENT}" -n "${NAMESPACE}" || [[ $count -eq 20 ]]; do
-#  echo "Waiting for deployment/${DEPLOYMENT} in ${NAMESPACE}"
-#  count=$((count + 1))
-#  sleep 15
-#done
-#
-#if [[ $count -eq 20 ]]; then
-#  echo "Timed out waiting for deployment/${DEPLOYMENT} in ${NAMESPACE}"
-#  kubectl get all -n "${NAMESPACE}"
-#  exit 1
-#fi
-#
-#kubectl rollout status "deployment/${DEPLOYMENT}" -n "${NAMESPACE}" || exit 1
+
+SUBSCRIPTION="subscription/${COMPONENT_NAME}"
+count=0
+until kubectl get "${SUBSCRIPTION}" -n "${NAMESPACE}" || [[ $count -eq 20 ]]; do
+  echo "Waiting for ${SUBSCRIPTION} in ${NAMESPACE}"
+  count=$((count + 1))
+  sleep 15
+done
+
+if [[ $count -eq 20 ]]; then
+  echo "Timed out waiting for ${SUBSCRIPTION} in ${NAMESPACE}"
+  kubectl get subscription -n "${NAMESPACE}"
+  exit 1
+fi
+
+CSV="csv/${COMPONENT_NAME}"
+count=0
+until kubectl get "${CSV}" -n "${NAMESPACE}" || [[ $count -eq 20 ]]; do
+  echo "Waiting for ${CSV} in ${NAMESPACE}"
+  count=$((count + 1))
+  sleep 15
+done
+
+if [[ $count -eq 20 ]]; then
+  echo "Timed out waiting for ${CSV} in ${NAMESPACE}"
+  kubectl get csv -n "${NAMESPACE}"
+  exit 1
+fi
+
 
 cd ..
 rm -rf .testrepo
