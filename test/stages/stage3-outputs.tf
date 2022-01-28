@@ -13,7 +13,7 @@ resource local_file write_outputs {
   })
 }
 
-resource null_resource write_bin_dir {
+resource local_file write_bin_dir {
   filename = ".bin_dir"
 
   content = module.gitops_module.bin_dir

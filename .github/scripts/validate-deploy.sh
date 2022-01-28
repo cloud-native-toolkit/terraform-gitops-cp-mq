@@ -67,8 +67,6 @@ if [[ $count -eq 20 ]]; then
   exit 1
 fi
 
-${BIN_DIR}/jq
-
 count=0
 until kubectl get csv -n "${NAMESPACE}" -o json | ${BIN_DIR}jq -r '.items[] | .metadata.name' | grep -q ibm-mq || [[ $count -eq 20 ]]; do
   echo "Waiting for ibm-mq csv in ${NAMESPACE}"
