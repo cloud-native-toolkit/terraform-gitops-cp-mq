@@ -20,9 +20,9 @@ versions:
         refs:
           - source: github.com/cloud-native-toolkit/terraform-gitops-cp-catalogs.git
             version: ">= 1.0.0"
-      - id: platform_navigator
+      - id: dep-manager
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-gitops-cp-platform-navigator.git
+          - source: github.com/cloud-native-toolkit/terraform-cp4i-dependency-management.git
             version: ">= 1.0.0"
     variables:
       - name: gitops_config
@@ -41,7 +41,7 @@ versions:
         moduleRef:
           id: catalogs
           output: catalog_ibmoperators
-      - name: platform_navigator_name
+      - name: channel
         moduleRef:
-          id: platform_navigator
-          output: name
+          id: dep-manager
+          output: mq.channel

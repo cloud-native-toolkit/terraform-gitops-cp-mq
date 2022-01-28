@@ -60,6 +60,7 @@ variable "git_credentials" {
     token = string
   }))
   description = "The credentials for the gitops repo(s)"
+  sensitive = true
 }
 
 variable "namespace" {
@@ -90,10 +91,4 @@ variable "channel" {
   type        = string
   description = "The channel that should be used to deploy the operator"
   default     = "v1.6"
-}
-
-variable "platform_navigator_name" {
-  type        = string
-  description = "The name of the platform navigator instance"
-  default     = ""
 }
