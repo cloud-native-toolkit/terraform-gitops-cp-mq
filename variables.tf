@@ -92,9 +92,3 @@ variable "channel" {
   description = "The channel that should be used to deploy the operator"
   default     = "v1.6"
 }
-
-variable "platform_navigator_name" {
-  type        = string
-  description = "The name of the platform navigator instance"
-  default     = ""
-}
