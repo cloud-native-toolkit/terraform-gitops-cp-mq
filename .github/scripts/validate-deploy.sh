@@ -68,7 +68,7 @@ if [[ $count -eq 20 ]]; then
 fi
 
 count=0
-until kubectl get csv -n "${NAMESPACE}" -o json | ${BIN_DIR}jq -r '.items[] | .metadata.name' | grep -q ibm-mq || [[ $count -eq 20 ]]; do
+until kubectl get csv -n "${NAMESPACE}" -o json | "${BIN_DIR}/jq" -r '.items[] | .metadata.name' | grep -q ibm-mq || [[ $count -eq 20 ]]; do
   echo "Waiting for ibm-mq csv in ${NAMESPACE}"
   count=$((count + 1))
   sleep 15
@@ -80,7 +80,7 @@ if [[ $count -eq 20 ]]; then
   exit 1
 fi
 
-CSV=$(kubectl get csv -n "${NAMESPACE}" -o json | ${BIN_DIR}jq -r '.items[] | .metadata.name' | grep ibm-mq)
+CSV=$(kubectl get csv -n "${NAMESPACE}" -o json | "${BIN_DIR}/jq" -r '.items[] | .metadata.name' | grep ibm-mq)
 echo "Found csv ${CSV} in ${NAMESPACE}"
 
 cd ..
