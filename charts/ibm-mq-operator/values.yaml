@@ -4,7 +4,7 @@ ibm-mq-operator:
     ibmmq:
       name: ibm-mq
       subscription:
-        channel: v1.6
+        channel: v1.7
         installPlanApproval: Automatic
         name: ibm-mq
         source: ibm-operator-catalog
