@@ -39,15 +39,30 @@ resource null_resource create_yaml {
   }
 }
 
-resource null_resource setup_gitops {
+resource gitops_module module {
   depends_on = [null_resource.create_yaml]
 
-  provisioner "local-exec" {
-    command = "${local.bin_dir}/igc gitops-module '${local.name}' -n '${var.namespace}' --contentDir '${local.yaml_dir}' --serverName '${var.server_name}' --valueFiles='values.yaml,${local.values_file}' -l '${local.layer}' --type ${local.type}"
 
-    environment = {
-      GIT_CREDENTIALS = yamlencode(nonsensitive(var.git_credentials))
-      GITOPS_CONFIG   = yamlencode(var.gitops_config)
-    }
-  }
+  name = local.name
+  namespace = var.namespace
+  content_dir = local.yaml_dir
+  server_name = var.server_name
+  layer = local.layer
+  type = local.type
+  branch = local.application_branch
+  config = yamlencode(var.gitops_config)
+  credentials = yamlencode(var.git_credentials)
 }
+
+# resource null_resource setup_gitops {
+#   depends_on = [null_resource.create_yaml]
+
+#   provisioner "local-exec" {
+#     command = "${local.bin_dir}/igc gitops-module '${local.name}' -n '${var.namespace}' --contentDir '${local.yaml_dir}' --serverName '${var.server_name}' --valueFiles='values.yaml,${local.values_file}' -l '${local.layer}' --type ${local.type}"
+
+#     environment = {
+#       GIT_CREDENTIALS = yamlencode(nonsensitive(var.git_credentials))
+#       GITOPS_CONFIG   = yamlencode(var.gitops_config)
+#     }
+#   }
+# }
