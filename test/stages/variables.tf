@@ -12,6 +12,11 @@ variable "server_url" {
   type        = string
 }
 
+variable "git_username" {
+  type= string
+  default = ""
+}
+
 variable "bootstrap_prefix" {
   type = string
   default = ""
