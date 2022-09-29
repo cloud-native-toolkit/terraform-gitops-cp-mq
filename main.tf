@@ -1,6 +1,5 @@
 locals {
   name          = "ibm-mq-operator"
-  bin_dir       = module.setup_clis.bin_dir
   yaml_dir      = "${path.cwd}/.tmp/${local.name}/chart/${local.name}"
   layer = "services"
   type  = "operators"
@@ -35,9 +34,8 @@ resource null_resource create_yaml {
   }
 }
 
-resource gitops_module module {
+resource gitops_module setup_gitops {
   depends_on = [null_resource.create_yaml]
-
 
   name = local.name
   namespace = var.namespace

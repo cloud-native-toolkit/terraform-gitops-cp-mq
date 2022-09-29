@@ -20,6 +20,5 @@ module setup_test_clis {
 resource local_file bin_dir {
     filename = "${path.cwd}/.bin_dir"
 
-
     content = module.setup_test_clis.bin_dir
 }
