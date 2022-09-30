@@ -12,6 +12,11 @@ variable "server_url" {
   type        = string
 }
 
+variable "git_username" {
+  type= string
+  default = ""
+}
+
 variable "bootstrap_prefix" {
   type = string
   default = ""
@@ -66,8 +71,6 @@ variable "gitops_namespace" {
   default = "openshift-gitops"
 }
 
-variable "git_username" {
-}
 
 variable "kubeseal_namespace" {
   default = "sealed-secrets"
